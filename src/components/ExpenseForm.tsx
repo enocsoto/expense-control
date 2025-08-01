@@ -7,47 +7,55 @@ import { useState, type ChangeEvent } from 'react';
 import ErrorMessage from './ErrorMessage';
 import { useBudget } from '../hooks/useBudget';
 
-
 const ExpenseForm = () => {
-
   const [expense, setExpense] = useState<DraftExpense>({
     amount: 0,
     expenseName: '',
     category: '',
     date: new Date(),
-  })
+  });
   const [error, setError] = useState('');
 
-  const {dispatch} = useBudget();
+  const { dispatch } = useBudget();
 
-const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-  const {name, value} = e.target;
-  const isAmountField = ['amount'].includes(name);
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    const isAmountField = ['amount'].includes(name);
     setExpense({
       ...expense,
-      [name]: isAmountField ? +value: value,
-    })
-  }
+      [name]: isAmountField ? +value : value,
+    });
+  };
 
   const handleChangeDate = (value: Value) => {
     setExpense({
       ...expense,
       date: value,
-    })
-  }
+    });
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(Object.values(expense).includes('')){
-      setError('Todos los campos son obligatorios')
+    //validar
+    if (Object.values(expense).includes('')) {
+      setError('Todos los campos son obligatorios');
       return;
     }
-
-    dispatch({type: 'add-expense', payload: {
-      expense
-    }});
-
-  }
+    // agregar nuevo gasto
+    dispatch({
+      type: 'add-expense',
+      payload: {
+        expense,
+      },
+    });
+    // limpiar formulario
+    setExpense({
+      amount: 0,
+      expenseName: '',
+      category: '',
+      date: new Date(),
+    });
+  };
   return (
     <form className="space-y-5" onSubmit={handleSubmit}>
       <legend className="uppercase text-center, text-2xl font-black boder-b-4 border-blue-500 py-2">
@@ -127,6 +135,6 @@ const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       />
     </form>
   );
-}
+};
 
-export default ExpenseForm
+export default ExpenseForm;

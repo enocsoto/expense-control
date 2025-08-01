@@ -3,8 +3,8 @@ export type Expense = {
   expenseName: string;
   amount: number;
   category: string;
-  date: Value
-}
+  date: Value;
+};
 
 export type DraftExpense = Omit<Expense, 'id'>;
 
@@ -13,6 +13,6 @@ export type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 export type Category = {
   id: string;
-  name: string; 
+  name: string;
   icon: string;
 };
