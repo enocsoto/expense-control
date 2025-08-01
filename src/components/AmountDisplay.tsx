@@ -1,4 +1,4 @@
-import { formatCurrency } from '../helpers/index';
+import { formatCurrency } from '../helpers';
 
 type AmountDisplayProps = {
   label: string,
