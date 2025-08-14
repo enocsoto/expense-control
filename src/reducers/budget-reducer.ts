@@ -6,18 +6,24 @@ export type BudgetActions =
   | { type: 'show-modal' }
   | { type: 'hide-modal' }
   | { type: 'add-expense'; payload: { expense: DraftExpense } }
-  | { type: 'delete-expense'; payload: { id: Expense['id'] } };
+  | { type: 'delete-expense'; payload: { id: Expense['id'] } }
+  | { type: 'edit-expense'; payload: { id: Expense['id'] } }
+  | { type: 'update-expense'; payload: { expense: Expense } };
+
+
 
 export type BudgetState = {
   budget: number;
   modal: boolean;
   expenses: Expense[];
+  editingId: Expense['id'];
 };
 
 export const initialState: BudgetState = {
   budget: 0,
   modal: false,
   expenses: [],
+  editingId: '',
 };
 
 export const budgetReducer = (state: BudgetState, action: BudgetActions) => {
@@ -38,6 +44,7 @@ export const budgetReducer = (state: BudgetState, action: BudgetActions) => {
     return {
       ...state,
       modal: false,
+      editingId: '',
     };
   }
 
@@ -55,6 +62,26 @@ export const budgetReducer = (state: BudgetState, action: BudgetActions) => {
     return {
       ...state,
       expenses: newexpenses,
+    };
+  }
+
+  if (action.type === 'edit-expense') {
+    return {
+      ...state,
+      editingId: action.payload.id,
+      modal: true,
+    };
+  }
+
+  if (action.type === 'update-expense') {
+    const newexpenses = state.expenses.map(expense =>
+      expense.id === action.payload.expense.id ? action.payload.expense : expense,
+    );
+    return {
+      ...state,
+      expenses: newexpenses,
+      editingId: '',
+      modal: false,
     };
   }
 

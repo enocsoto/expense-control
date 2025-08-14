@@ -3,12 +3,9 @@ import { useBudget } from '../hooks/useBudget';
 import ExpenseDetails from './ExpenseDetails';
 
 const ExpenseList = () => {
-  const { state, dispatch } = useBudget();
+  const { state } = useBudget();
   const isEmpty = useMemo(() => !state.expenses.length, [state.expenses]);
 
-  const handleDelete = (id: string) => {
-    dispatch({ type: 'delete-expense', payload: { id } });
-  };
   return (
     <div className="mt-10">
       {isEmpty ? (
@@ -17,7 +14,7 @@ const ExpenseList = () => {
         <>
           <p className="text-gray-600 text-2xl font-bold my-5">Listado de Gastos</p>
           {state.expenses.map(expense => (
-            <ExpenseDetails key={expense.id} expense={expense} handleDelete={handleDelete} />
+            <ExpenseDetails key={expense.id} expense={expense} />
           ))}
         </>
       )}
